@@ -1,0 +1,5 @@
+x-vy:
+  public:
+    - .:/vybot
+
+version: '3.6'
