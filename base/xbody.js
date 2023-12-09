@@ -56,7 +56,8 @@ let render_inertia = function (XTHREE,xbody) {
     {transparent:true, opacity:0.4, depthTest:true,depthWrite:true});
   var mesh = new THREE.Mesh( geometry, material );
   mesh.userData.xbody = xbody.name;
-  XTHREE.scene.add(obj);
+  mesh.name = xbody.name + 'inertia'
+  XTHREE.scene.add(mesh);
 };
   
 let xtransform = function(xbody, currentState) {

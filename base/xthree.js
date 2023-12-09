@@ -1,12 +1,12 @@
-import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js';
-import { OrbitControls } from 'https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js'; // later versions
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 window.THREE = THREE;
 
 export function createXthree(divin) {
   let xthree = {}
 
-  xthree.ORBITCONTROLS = true;
+  xthree.ORBITCONTROLS = Boolean(OrbitControls);
   xthree.ACTIVE = false;
   xthree.scene = null;
   xthree.camera = null;

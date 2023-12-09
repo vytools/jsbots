@@ -1,5 +1,5 @@
 x-vy:
   public:
-    - .:/vybot
+    - .:/jsbots
 
 version: '3.6'
