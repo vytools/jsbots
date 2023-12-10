@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 export function make_dof(dofp, name) {
   var sufx = ['_tx','_ty','_tz','_rz','_ry','_rx'];
   var axis = [[1,0,0],[0,1,0],[0,0,1],[0,0,1],[0,1,0],[1,0,0]];

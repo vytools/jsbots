@@ -1,8 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-window.THREE = THREE;
-
 export function createXthree(divin) {
   let xthree = {}
 
@@ -64,7 +62,6 @@ export function createXthree(divin) {
     this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256 );
     this.cubeRenderTarget.texture.type = THREE.HalfFloatType;
     this.cubeCamera = new THREE.CubeCamera( 1, 1000, this.cubeRenderTarget );
-
 
     let self = this;
     let resize_three = function() {

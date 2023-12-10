@@ -5,7 +5,7 @@ export function dot(a,b) {          return a.x*b.x + a.y*b.y + a.z*b.z; };
 export function norm(a) {           return Math.hypot(a.x, a.y, a.z); };
 export function cross(a,b) {        return {x:a.y*b.z-a.z*b.y , y:a.z*b.x-b.z*a.x , z:a.x*b.y-b.x*a.y} };
 
-export function R2xyz(R) {
+export function gRl_2_xyz(R) {
   // This doesn't do any preprocessing of R, R should be a right-handed transformation matrix
   // in order for this routine to return reasonable results
   return {
@@ -15,7 +15,7 @@ export function R2xyz(R) {
   };
 }
 
-export function xyz2R(xyz) {
+export function global_from_local(xyz) {
   var cx = Math.cos(xyz.x),   sx = Math.sin(xyz.x);
   var cy = Math.cos(xyz.y),   sy = Math.sin(xyz.y);
   var cz = Math.cos(xyz.z),   sz = Math.sin(xyz.z);
@@ -24,7 +24,20 @@ export function xyz2R(xyz) {
           [-sy,          cy*sx,          cy*cx]];
 };
 
-export function xyz2dRdt(p,v) {
+export function local_from_global(xyz) {
+// From global to body frame = Rx*Ry*Rz
+// Rx = [1  0   0  ;  0 Cx Sx  ;  0 -Sx  Cx]
+// Ry = [Cy 0 -Sy  ;  0  1  0  ;  Sy  0  Cy]
+// Rz = [Cz Sz  0  ; -Sz Cz 0  ;   0  0   1]
+  var cx = Math.cos(xyz.x),   sx = Math.sin(xyz.x);
+  var cy = Math.cos(xyz.y),   sy = Math.sin(xyz.y);
+  var cz = Math.cos(xyz.z),   sz = Math.sin(xyz.z);
+  return [[cz*cy,   sz*cy,   -sy], 
+          [cz*sy*sx-sz*cx, sz*sy*sx+cz*cx, cy*sx],
+          [cz*sy*cx+sz*sx, sz*sy*cx-cz*sx, cy*cx]]
+};
+
+export function d_global_from_local_dt(p,v) {
   var cx = Math.cos(p.x),   sx = Math.sin(p.x);
   var cy = Math.cos(p.y),   sy = Math.sin(p.y);
   var cz = Math.cos(p.z),   sz = Math.sin(p.z);
