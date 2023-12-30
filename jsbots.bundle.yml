@@ -1,5 +1,0 @@
-x-vy:
-  public:
-    - .:/jsbots
-
-version: '3.6'

@@ -1,9 +1,13 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+let THREE = null, OrbitControls = null, BLOOM = null;
+import('three').then(exports => { THREE = exports; }).catch((err) => {})
+import('three/addons/controls/OrbitControls.js').then(exports => {
+  OrbitControls = exports.OrbitControls;
+}).catch(err => {})
+import('./bloom_render.js').then(exports => { BLOOM = exports; }).catch(err => {})
 
 export function createXthree(divin) {
   let xthree = {}
-
+  if (!THREE) return xthree;
   xthree.ORBITCONTROLS = Boolean(OrbitControls);
   xthree.ACTIVE = false;
   xthree.scene = null;
@@ -75,5 +79,6 @@ export function createXthree(divin) {
     
   }
   xthree.init(divin);
+  BLOOM.init(xthree);
   return xthree;
 }
