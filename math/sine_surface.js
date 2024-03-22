@@ -5,9 +5,7 @@ const twopi = 2*Math.PI;
 const WIDTH_FACTOR_1 = Math.pow(2*(0.975 - 0.5),2);
 const WIDTH_FACTOR = Math.sqrt(WIDTH_FACTOR_1/(1-WIDTH_FACTOR_1));
 
-const sigmoid = function(x, y, arena_radius) {
-  let radius = arena_radius/2;
-  let width95 = 3*arena_radius/4;
+const sigmoid = function(x, y, radius, width95) {
   let arg = x*x + y*y, dargdx = 2*x, dargdy = 2*y, d2argdx2 = 2, d2argdy2 = 2;
   if (arg < 0.001) return {z:1,dzdx:0,dzdy:0,d2zdx2:0,d2zdy2:0,d2zdxdy:0};
   let a2 = Math.sqrt(arg);
@@ -32,7 +30,7 @@ const derivatives = function(x, y, parameters) {
   // parameters has "waves" and "arena_radius"
     var z = 0, dzdx = 0, dzdy = 0;
     // let sig = {z:1,dzdx:0,dzdy:0};
-    let sig = sigmoid(x, y, parameters.arena_radius);
+    let sig = sigmoid(x, y, parameters.sigmoid_radius, parameters.sigmoid_width95);
     for (let ii = 0; ii < parameters.waves.length; ii++) {
       // Length along wave ii (normalized to wavelength)
       // Each wave has [amplitude, wavelength, direction, phase]
@@ -62,13 +60,18 @@ const generate = function(seed, arena_radius, maxamp) {
     var wvl = Math.max(0.1,rand())*arena_radius;
     var phi = Math.PI*rand();
     var psi = Math.PI*rand();
-    waves.push({'amplitude':amp,'wavelength':wvl,'azimuth':phi,'phase':psi});
+    waves.push({amplitude:amp, wavelength:wvl, azimuth:phi, phase:psi});
   }
-  return {arena_radius:arena_radius, waves:waves};
+  return {
+    sigmoid_radius:arena_radius/2, 
+    sigmoid_width95:3*arena_radius/4, 
+    waves:waves
+  };
 }
 
 export function geometry(CONFIG, nfacets) {
-  let parameters = generate(CONFIG.surface_seed, CONFIG.arena_radius, CONFIG.amplitude);
+  let parameters = CONFIG.surface ? CONFIG.surface : 
+    generate(CONFIG.surface_seed, CONFIG.arena_radius, CONFIG.amplitude);
   let n = Math.max(2, Math.min(200, nfacets));
   let data = {hdata:[],n:n,derivatives:(x,y)=>{ return derivatives(x,y,parameters); }};
   let spc = (2*CONFIG.arena_radius)/(data.n-1);
