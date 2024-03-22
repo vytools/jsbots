@@ -51,7 +51,7 @@ const derivatives = function(x, y, parameters) {
     return {z:z, dzdx:dzdx, dzdy:dzdy};
 }
 
-const generate = function(seed, arena_radius, maxamp) {
+export function generate(seed, arena_radius, maxamp) {
    // A seeded RNG (same results for = values of gridd)
   let rand = get_RNG(''+seed);
   var waves = [];
@@ -70,8 +70,8 @@ const generate = function(seed, arena_radius, maxamp) {
 }
 
 export function geometry(CONFIG, nfacets) {
-  let parameters = CONFIG.surface ? CONFIG.surface : 
-    generate(CONFIG.surface_seed, CONFIG.arena_radius, CONFIG.amplitude);
+  if (!CONFIG.surface) return null;
+  let parameters = CONFIG.surface;
   let n = Math.max(2, Math.min(200, nfacets));
   let data = {hdata:[],n:n,derivatives:(x,y)=>{ return derivatives(x,y,parameters); }};
   let spc = (2*CONFIG.arena_radius)/(data.n-1);
