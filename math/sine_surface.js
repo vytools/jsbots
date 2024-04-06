@@ -6,8 +6,8 @@ const WIDTH_FACTOR_1 = Math.pow(2*(0.975 - 0.5),2);
 const WIDTH_FACTOR = Math.sqrt(WIDTH_FACTOR_1/(1-WIDTH_FACTOR_1));
 
 const sigmoid = function(x, y, radius, width95) {
-  let arg = x*x + y*y, dargdx = 2*x, dargdy = 2*y, d2argdx2 = 2, d2argdy2 = 2;
-  if (arg < 0.001) return {z:1,dzdx:0,dzdy:0,d2zdx2:0,d2zdy2:0,d2zdxdy:0};
+  let arg = x*x + y*y, dargdx = 2*x, dargdy = 2*y;
+  if (arg < 0.001 || width95 <= 0) return {z:1,dzdx:0,dzdy:0,d2zdx2:0,d2zdy2:0,d2zdxdy:0};
   let a2 = Math.sqrt(arg);
   let l = radius - a2;
   let dldarg = -0.5/a2;
