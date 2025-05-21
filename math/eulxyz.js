@@ -5,7 +5,7 @@ export function dot(a,b) {          return a.x*b.x + a.y*b.y + a.z*b.z; };
 export function norm(a) {           return Math.hypot(a.x, a.y, a.z); };
 export function cross(a,b) {        return {x:a.y*b.z-a.z*b.y , y:a.z*b.x-b.z*a.x , z:a.x*b.y-b.x*a.y} };
 
-export function gRl_2_xyz(R) {
+export function gRl_2_rpy_vec(R) {
   // This doesn't do any preprocessing of R, R should be a right-handed transformation matrix
   // in order for this routine to return reasonable results
   return {
@@ -15,7 +15,7 @@ export function gRl_2_xyz(R) {
   };
 }
 
-export function global_from_local(xyz) {
+export function global_2_local_R_from_rpy(xyz) {
   var cx = Math.cos(xyz.x),   sx = Math.sin(xyz.x);
   var cy = Math.cos(xyz.y),   sy = Math.sin(xyz.y);
   var cz = Math.cos(xyz.z),   sz = Math.sin(xyz.z);
@@ -65,14 +65,14 @@ export function matrix_multiply(w,v) {
     };
 }
 
-export function wrap(q) {
+export function unwrap_angle(q) {
   return q += (q < -Math.PI) ?  2*Math.PI*Math.floor((Math.PI-q)/2/Math.PI)
             : (q >  Math.PI) ? -2*Math.PI*Math.floor((Math.PI+q)/2/Math.PI) : 0;
 }
 // [0,-0,999,-1.0001,0.9999,1.0001].forEach(q => { // TEST WRAP
 //   for (var ii = 0; ii < 10; ii++) {
 //     let qq = q*Math.PI + Math.floor((Math.random()-0.5)*100)*2*Math.PI;
-//     console.log(q,wrap(qq)/Math.PI);
+//     console.log(q,unwrap_angle(qq)/Math.PI);
 //   }
 // })
 
