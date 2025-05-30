@@ -74,11 +74,11 @@ export function geometry(CONFIG, nfacets) {
   let parameters = CONFIG.surface;
   let n = Math.max(2, Math.min(200, nfacets));
   let data = {hdata:[],n:n,derivatives:(x,y)=>{ return derivatives(x,y,parameters); }};
-  let spc = (2*CONFIG.arena_radius)/(data.n-1);
+  let spc = (2*CONFIG.arena_radius_m)/(data.n-1);
   for (let r = 0; r < n; r++) {
-    let y = -CONFIG.arena_radius+r*spc;
+    let y = -CONFIG.arena_radius_m+r*spc;
     for (let c = 0; c < n; c++) {
-      let z = derivatives(-CONFIG.arena_radius+c*spc,y,parameters).z;
+      let z = derivatives(-CONFIG.arena_radius_m+c*spc,y,parameters).z;
       if (z) data.hdata.push(z);
     }
   }
