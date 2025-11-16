@@ -65,14 +65,14 @@ export function matrix_multiply(w,v) {
     };
 }
 
-export function unwrap_angle(q) {
+export function pimod(q) {
   return q += (q < -Math.PI) ?  2*Math.PI*Math.floor((Math.PI-q)/2/Math.PI)
             : (q >  Math.PI) ? -2*Math.PI*Math.floor((Math.PI+q)/2/Math.PI) : 0;
 }
 // [0,-0,999,-1.0001,0.9999,1.0001].forEach(q => { // TEST WRAP
 //   for (var ii = 0; ii < 10; ii++) {
 //     let qq = q*Math.PI + Math.floor((Math.random()-0.5)*100)*2*Math.PI;
-//     console.log(q,unwrap_angle(qq)/Math.PI);
+//     console.log(q,pimod(qq)/Math.PI);
 //   }
 // })
 
