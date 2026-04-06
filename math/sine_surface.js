@@ -1,4 +1,4 @@
-import { get_RNG } from '../math/seedrandom.js'; 
+import { RNG } from "https://cdn.jsdelivr.net/gh/vytools/vyjs@v4.0.5/js/rng.js";
 
 const twopi = 2*Math.PI;
 
@@ -53,7 +53,7 @@ const derivatives = function(x, y, parameters) {
 
 export function generate(seed, arena_radius, maxamp) {
    // A seeded RNG (same results for = values of gridd)
-  let rand = get_RNG(''+seed);
+  let rand = RNG(''+seed);
   var waves = [];
   for (var ii = 0;  ii < 10 && maxamp > 0; ii++) {
     var amp = maxamp*rand();
