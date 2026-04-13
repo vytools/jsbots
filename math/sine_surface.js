@@ -26,18 +26,18 @@ const sigmoid = function(x, y, radius, width95) {
   return surf;
 }
 
-const derivatives = function(x, y, parameters) {
-  // parameters has "waves" and "arena_radius"
+const derivatives = function(x, y, surface_features) {
+  // parameters has "waves" and "sigmoid"
     var z = 0, dzdx = 0, dzdy = 0;
     // let sig = {z:1,dzdx:0,dzdy:0};
-    let sig = sigmoid(x, y, parameters.sigmoid_radius, parameters.sigmoid_width95);
-    for (let ii = 0; ii < parameters.waves.length; ii++) {
+    let sig = sigmoid(x, y, surface_features.sigmoid_radius, surface_features.sigmoid_width95);
+    surface_features.waves.forEach(w => {
       // Length along wave ii (normalized to wavelength)
       // Each wave has [amplitude, wavelength, direction, phase]
-      var amp = parameters.waves[ii].amplitude;
-      var wvl = parameters.waves[ii].wavelength;
-      var phi = parameters.waves[ii].azimuth;
-      var psi = parameters.waves[ii].phase;
+      var amp = w.amplitude;
+      var wvl = w.wavelength;
+      var phi = w.azimuth;
+      var psi = w.phase;
       var cq = Math.cos(phi);
       var sq = Math.sin(phi);
       var L = (x*cq + y*sq)/wvl;  var dLdx = cq/wvl;      var dLdy = sq/wvl;
@@ -47,7 +47,7 @@ const derivatives = function(x, y, parameters) {
       z = z + sig.z*amp*cq_;
       dzdx += -sig.z*amp*dqdx*sq_ + amp*cq_*sig.dzdx;
       dzdy += -sig.z*amp*dqdy*sq_ + amp*cq_*sig.dzdy;
-    }
+    });
     return {z:z, dzdx:dzdx, dzdy:dzdy};
 }
 
@@ -69,16 +69,14 @@ export function generate(seed, arena_radius, maxamp) {
   };
 }
 
-export function geometry(CONFIG, nfacets) {
-  if (!CONFIG.surface) return null;
-  let parameters = CONFIG.surface;
+export function geometry(arena_radius_m, surface_features, nfacets) {
   let n = Math.max(2, Math.min(200, nfacets));
-  let data = {hdata:[],n:n,derivatives:(x,y)=>{ return derivatives(x,y,parameters); }};
-  let spc = (2*CONFIG.arena_radius_m)/(data.n-1);
+  let data = {hdata:[],n,arena_radius_m,derivatives:(x,y)=>{ return derivatives(x,y,surface_features); }};
+  let spc = (2*arena_radius_m)/(data.n-1);
   for (let r = 0; r < n; r++) {
-    let y = -CONFIG.arena_radius_m+r*spc;
+    let y = -arena_radius_m+r*spc;
     for (let c = 0; c < n; c++) {
-      let z = derivatives(-CONFIG.arena_radius_m+c*spc,y,parameters).z;
+      let z = derivatives(-arena_radius_m+c*spc,y,surface_features).z;
       if (z) data.hdata.push(z);
     }
   }

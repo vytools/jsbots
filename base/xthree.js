@@ -7,7 +7,7 @@ import('./bloom_render.js').then(exports => { BLOOM = exports; }).catch(err => {
 
 export function createXthree(divin) {
   let xthree = {}
-  if (!THREE) return xthree;
+  if (!THREE || !divin) return xthree;
   xthree.ORBITCONTROLS = Boolean(OrbitControls);
   xthree.ACTIVE = false;
   xthree.scene = null;
