@@ -77,7 +77,7 @@ export function geometry(arena_radius_m, surface_features, nfacets) {
     let y = -arena_radius_m+r*spc;
     for (let c = 0; c < n; c++) {
       let z = derivatives(-arena_radius_m+c*spc,y,surface_features).z;
-      if (z) data.hdata.push(z);
+      data.hdata.push(z);
     }
   }
   return data;
